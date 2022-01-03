@@ -1,2 +1,2 @@
 # JetBrains-Acad
-Collections of projects from JetBrains Academy
+Project collection from JetBrains Academy
