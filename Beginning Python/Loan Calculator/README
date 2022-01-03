@@ -3,4 +3,8 @@ Loan Calculator - JetBrains Academy
 
 Calculates annuity payments or differentiated payments from command line arguments
 
+Topics:
+Argparse module
+Math operations
+
 Original Commit: 24 December 2021
