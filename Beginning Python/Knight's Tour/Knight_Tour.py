@@ -229,7 +229,8 @@ def main():
                 x_solution = int(val[1])
                 str_i = str(i)
                 board[y_solution][x_solution] = str(f"{' ' * (p_len - len(str_i))}{str_i}")
-
+            
+            # Prints the formatted solution board
             border = f"{' ' if board_y < 10 else ' ' * 2}{'-' * (board_x * (p_len + 1) + 3)}"
             print(border)
 
