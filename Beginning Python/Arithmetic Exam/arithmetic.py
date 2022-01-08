@@ -65,12 +65,12 @@ def main():
                 print("Wrong!")
 
     # Saves the result with a name to file "results.txt"
-    save = input(f"Your mark is {count}/5. Would you like to save this result? Enter yes or no.")
+    save = input(f"Your mark is {count}/5. Would you like to save this result? Enter yes or no.\n")
 
     if save in ["yes", "YES", "y", "Yes"]:
-        name = input("What is your name?")
+        name = input("What is your name?\n")
         with open("results.txt", "a") as results:
-            if level == 1:
+            if level == "1":
                 results.write(f"{name}: {count}/5 in level 1 (simple operations with numbers 2-9)")
             else:
                 results.write(f"{name}: {count}/5 in level 2 (integral squares of 11-29)")
