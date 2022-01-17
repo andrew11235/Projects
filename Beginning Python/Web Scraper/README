@@ -1,1 +1,11 @@
+# Web Scraper
+Web Scraper Project - JetBrains Academy
 
+Find and save articles on the web from Nature Publishing
+https://www.nature.com/nature/articles
+
+Topics:
+Files & Directories
+Requests & BeautifulSoup
+
+Original Commit: 17 Janurary 2022
