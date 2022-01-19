@@ -5,6 +5,7 @@ Calculates annuity payments or differentiated payments from command line argumen
 
 Topics:
 Argparse module
-Math operations
+
+Python 3.10.2
 
 Original Commit: 24 December 2021
