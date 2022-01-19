@@ -6,6 +6,7 @@ Program to play or find solutions to knight's tour puzzles
 Topics:
 Algorithms
 Recursion
-Error handling
+
+Python 3.10.2
 
 Original Commit: 2 Janurary 2022
