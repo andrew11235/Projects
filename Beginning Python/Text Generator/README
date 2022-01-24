@@ -1,1 +1,13 @@
+# Text Generator
+Text Generator Project - JetBrains Academy
 
+Generate psuedo-text with nltk using a text corpus
+
+Sample texts from Project Gutenberg
+
+Topics:
+nltk
+
+Python 3.10.2
+
+Original Commit: 23 Janurary 202
