@@ -3,7 +3,10 @@ Text Generator Project - JetBrains Academy
 
 Generate psuedo-text with nltk using a text corpus
 
-Sample texts from Project Gutenberg
+Sample texts:
+War and Peace by Leo Tolstoy
+Gone With the Wind by Margaret Mitchell
+from Project Gutenberg
 
 Topics:
 nltk
