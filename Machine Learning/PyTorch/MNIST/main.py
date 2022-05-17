@@ -1,6 +1,9 @@
+import numpy as np
 import torch
-from torchvision import transforms, datasets
 from torch import nn, optim
+from torchvision import transforms, datasets
+import matplotlib.pyplot as plt
+from PIL import Image
 
 
 def load_data(batch_size):
@@ -11,6 +14,18 @@ def load_data(batch_size):
     val_dl = torch.utils.data.DataLoader(val_set, batch_size=batch_size, shuffle=True)
 
     return train_dl, val_dl
+
+
+def load_custom(path):
+    img = Image.open(path)
+    plt.imshow(img, cmap='gray_r')
+    plt.show()
+
+    transform = transforms.ToTensor()
+    custom = transform(img)
+    custom_dl = torch.utils.data.DataLoader(custom)
+
+    return custom_dl
 
 
 def train(epochs, model, train_dl, optimizer, criterion):
@@ -35,9 +50,7 @@ def train(epochs, model, train_dl, optimizer, criterion):
     return model
 
 
-def evaluate(model, val_dl):
-    print(val_dl)
-    exit()
+def evaluate(model, val_dl, metric=False):
     correct_count, all_count = 0, 0
     for images, labels in val_dl:
         for i in range(len(labels)):
@@ -48,14 +61,38 @@ def evaluate(model, val_dl):
 
             ps = torch.exp(log_probs)
             prob = list(ps.numpy()[0])
+
             pred_label = prob.index(max(prob))
             true_label = labels.numpy()[i]
+
             if true_label == pred_label:
                 correct_count += 1
+            elif metric:
+                plt.imshow(images[i].numpy().reshape((28, 28)), cmap='gray')
+                plt.show()
+                print(f'Predicted: {pred_label}, Actual: {true_label}')
+                input()
+                plt.close('all')
+
             all_count += 1
 
     print(f'Accuracy: {correct_count / all_count}')
 
+
+def evaluate_custom(model, custom):
+    for image in custom:
+        img_in = image.view(1, 784)
+
+        with torch.no_grad():
+            log_probs = model(img_in)
+
+        ps = torch.exp(log_probs)
+        prob = list(ps.numpy()[0])
+
+        pred_label = prob.index(max(prob))
+
+        print(f'Predicted: {pred_label}')
+        break
 
 def main():
     batch_size = 64
@@ -78,11 +115,13 @@ def main():
     optimizer = optim.SGD(model.parameters(), lr=alpha, momentum=gamma)
     criterion = nn.NLLLoss()
 
-    model = train(3, model, train_dl, optimizer, criterion)
+    # model = train(3, model, train_dl, optimizer, criterion)
+    # torch.save(model, './mnist_model.pt')
 
-    evaluate(model, val_dl)
+    evaluate(model, val_dl, metric=True)
 
-    torch.save(model, './mnist_model.pt')
+    # custom = load_custom('./custom/custom8.png')
+    # evaluate_custom(model, custom)
 
 
 if __name__ == '__main__':
