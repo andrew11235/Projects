@@ -22,7 +22,7 @@ def input_keys(xpath, keys):
 
 
 driver = webdriver.Chrome()
-driver.get("https://tomrebold.com/csis10a/assess/13/")
+driver.get("https://tomrebold.com/csis10a/assess/01/")  # Change assessment number 
 
 input_keys('//*[@id="User"]', "WangAn" + Keys.ENTER)
 
