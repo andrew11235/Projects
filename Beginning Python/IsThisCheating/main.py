@@ -22,7 +22,7 @@ def input_keys(xpath, keys):
 
 
 driver = webdriver.Chrome()
-driver.get("https://tomrebold.com/csis10b/assess/06/")  # Assessment URL
+driver.get("https://tomrebold.com/csis10b/assess/01/")  # Assessment URL
 
 input_keys('//*[@id="User"]', "WangAn" + Keys.ENTER)
 
