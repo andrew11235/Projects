@@ -1,13 +1,13 @@
-# Andrew Wang 2022
-# 
-# Is This Cheating?
-# Auto-enters guesses into CS10A assessments to brute force crack answers
+# Andrew Wang 2023
+#
+# Is This Cheating...?
+#
+# Auto-enters guesses into CS10 assessments to brute force answers
 # Subverts copy-paste restriction
-# 
-# Credits: Tom Rebold, Monterey Peninsula College
+#
+# Credit: Tom Rebold, Monterey Peninsula College
 
-
-import string
+import time
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -22,19 +22,44 @@ def input_keys(xpath, keys):
 
 
 driver = webdriver.Chrome()
-driver.get("https://tomrebold.com/csis10a/assess/01/")  # Change assessment number 
+driver.get("https://tomrebold.com/csis10b/assess/06/")  # Assessment URL
 
 input_keys('//*[@id="User"]', "WangAn" + Keys.ENTER)
 
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "userAns[]")))
 boxes = driver.find_elements(by=By.NAME, value="userAns[]")
 checks = [driver.find_element(by=By.ID, value=f"Chk{i}") for i in range(1, len(boxes) + 1)]
+submits = driver.find_elements(by=By.NAME, value="SubmitButton")
+
+printable = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ '
 
 # Question Number
-i = 1  
-# Guess string
-guess = string.ascii_uppercase + string.ascii_lowercase * 10
+for i in range(1, len(boxes) + 1):
 
-boxes[i - 1].send_keys(guess)
-checks[i - 1].click()
+    guess = printable * len(driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text)
 
+    boxes[i - 1].send_keys(guess)
+    checks[i - 1].click()
+    submits[i + 1].click()
+
+    ans = driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text
+
+    while True:
+        ans = driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text
+        if "#" in ans:
+            break
+        else:
+            time.sleep(.005)
+
+    ans = ans.replace('#', '')
+    inputAns = ans[ans.index(')') + 1:ans.rindex('|') - 1]
+
+    print(f"{i}: {inputAns}")
+
+    boxes[i - 1].clear()
+    boxes[i - 1].send_keys(inputAns)
+    checks[i - 1].click()
+
+    submits[i + 1].click()
+
+input()
