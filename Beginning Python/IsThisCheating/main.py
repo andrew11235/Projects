@@ -16,52 +16,63 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
-def input_keys(xpath, keys):
+def input_keys(driver, xpath, keys):
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, xpath)))
     driver.find_element(by=By.XPATH, value=xpath).send_keys(keys)
 
 
-driver = webdriver.Chrome()
-driver.get("https://tomrebold.com/csis10b/assess/12/")  # Assessment URL
+def main():
+    ab = input("10 A or B? <a/b>\n")
+    drill_num = input("Drill #?\n")
 
-pw = input("Password?\n")
+    if len(drill_num) < 2:
+        drill_num = "0" + drill_num
 
-input_keys('//*[@id="User"]', pw + Keys.ENTER)
+    driver = webdriver.Chrome()
+    driver.get(f"https://tomrebold.com/csis10{ab}/assess/{drill_num}/")  # Assessment URL
 
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "userAns[]")))
-boxes = driver.find_elements(by=By.NAME, value="userAns[]")
-checks = [driver.find_element(by=By.ID, value=f"Chk{i}") for i in range(1, len(boxes) + 1)]
-submits = driver.find_elements(by=By.NAME, value="SubmitButton")
+    pw = input("Password?\n")
 
-printable = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ '
+    input_keys(driver, '//*[@id="User"]', pw + Keys.ENTER)
 
-# Question Number
-for i in range(1, len(boxes) + 1):
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "userAns[]")))
+    boxes = driver.find_elements(by=By.NAME, value="userAns[]")
+    checks = [driver.find_element(by=By.ID, value=f"Chk{i}") for i in range(1, len(boxes) + 1)]
+    submits = driver.find_elements(by=By.NAME, value="SubmitButton")
 
-    guess = printable * len(driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text)
+    printable = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ '
 
-    boxes[i - 1].send_keys(guess)
-    checks[i - 1].click()
-    submits[i + 1].click()
+    # Question Number
+    for i in range(1, len(boxes) + 1):
 
-    ans = driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text
+        guess = printable * len(driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text)
 
-    while True:
+        boxes[i - 1].send_keys(guess)
+        checks[i - 1].click()
+        submits[i + 1].click()
+
         ans = driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text
-        if "#" in ans:
-            break
-        else:
-            time.sleep(.005)
 
-    ans = ans.replace('#', '')
-    inputAns = ans[ans.index(')') + 1:ans.rindex('|') - 1]
+        while True:
+            ans = driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text
+            if "#" in ans:
+                break
+            else:
+                time.sleep(.005)
 
-    print(f"{i}: {inputAns}")
+        ans = ans.replace('#', '')
+        input_ans = ans[ans.index(')') + 1:ans.rindex('|') - 1]
 
-    boxes[i - 1].clear()
-    boxes[i - 1].send_keys(inputAns)
-    checks[i - 1].click()
+        print(f"{i}: {input_ans}")
 
-    submits[i + 1].click()
+        boxes[i - 1].clear()
+        boxes[i - 1].send_keys(input_ans)
+        checks[i - 1].click()
 
-input()
+        submits[i + 1].click()
+
+    input()
+
+
+if __name__ == '__main__':
+    main()
