@@ -22,9 +22,11 @@ def input_keys(xpath, keys):
 
 
 driver = webdriver.Chrome()
-driver.get("https://tomrebold.com/csis10b/assess/01/")  # Assessment URL
+driver.get("https://tomrebold.com/csis10b/assess/12/")  # Assessment URL
 
-input_keys('//*[@id="User"]', "WangAn" + Keys.ENTER)
+pw = input("Password?\n")
+
+input_keys('//*[@id="User"]', pw + Keys.ENTER)
 
 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "userAns[]")))
 boxes = driver.find_elements(by=By.NAME, value="userAns[]")
