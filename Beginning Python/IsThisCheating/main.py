@@ -51,8 +51,6 @@ def main():
         checks[i - 1].click()
         submits[i + 1].click()
 
-        ans = driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text
-
         while True:
             ans = driver.find_element(by=By.CSS_SELECTOR, value=f"#feedback{i}").text
             if "#" in ans:
